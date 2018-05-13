@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Morgen</string>
+    <string name="find_me_button">Get Location</string>
+    <string name="set_destination_button">Set Destination</string>
+    <string name="latitude_hint">Latitude</string>
+    <string name="longitude_hint">Longitude</string>
+    <string name="proximity_hint">Proximity</string>
+</resources>
