@@ -15,14 +15,14 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
-class DestinationActivity() : AppCompatActivity(), OnMapReadyCallback {
+class DestinationActivity : AppCompatActivity(), OnMapReadyCallback {
     private val TAG: String = "DestinationActivity"
 
     lateinit var destination: Location
     var userLocation: Location? = null
     var proximity: Float = 20.0f
 
-    var locationListener: LocationListener = DestinationLocationListener(this)
+    var locationListener: LocationListener = CallbackLocationListener(this::onLocationChange)
     var destinatonReached: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,39 +76,5 @@ class DestinationActivity() : AppCompatActivity(), OnMapReadyCallback {
 
     fun locToLatLng(location: Location) : LatLng {
         return LatLng(location.latitude, location.longitude)
-    }
-}
-
-class DestinationLocationListener(activity: DestinationActivity) : LocationListener {
-    private val TAG: String = "DestLocationListener"
-
-    var activity: DestinationActivity = activity
-    var lastLocation: Location? = null
-    var lastStatus: Int? = null
-    var providerEnabled: Boolean? = null
-
-    override fun onLocationChanged(location: Location) {
-        lastLocation = location
-
-        activity.onLocationChange(location)
-
-        Log.v(TAG, "Location Changed")
-    }
-
-    override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {
-        lastStatus = status
-
-        Log.v(TAG, "Status Changed To: $status")
-    }
-
-    override fun onProviderEnabled(provider: String) {
-        providerEnabled = true
-
-        Log.v(TAG, "Provider Enabled")
-    }
-    override fun onProviderDisabled(provider: String) {
-        providerEnabled = false
-
-        Log.v(TAG, "Provider Disabled")
     }
 }
