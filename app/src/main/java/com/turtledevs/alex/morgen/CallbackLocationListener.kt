@@ -12,7 +12,7 @@ import android.util.Log
  */
 
 class CallbackLocationListener constructor(private val callback: (location: Location) -> Unit) : LocationListener {
-    private val TAG: String = "CallbackLocationListener"
+    private val TAG: String = "CBLocationListener"
 
     private var lastLocation: Location? = null
     private var lastStatus: Int? = null
