@@ -18,8 +18,8 @@ import com.google.android.gms.maps.model.MarkerOptions
 class DestinationActivity : AppCompatActivity(), OnMapReadyCallback {
     private val TAG: String = "DestinationActivity"
 
-    lateinit var destination: Location
-    var userLocation: Location? = null
+    lateinit var destination: Position
+    var userLocation: Position? = null
     var proximity: Float = 20.0f
 
     var locationListener: LocationListener = CallbackLocationListener(this::onLocationChange)
@@ -29,7 +29,7 @@ class DestinationActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_destination)
 
-        destination = constructLocation(intent.getDoubleExtra("LATITUDE", 0.0), intent.getDoubleExtra("LONGITUDE", 0.0))
+        destination = Position(intent.getDoubleExtra("LATITUDE", 0.0), intent.getDoubleExtra("LONGITUDE", 0.0))
         proximity = intent.getFloatExtra("PROXIMITY", 20.0f )
 
         val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -44,7 +44,9 @@ class DestinationActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
     }
 
-    fun onLocationChange(location: Location) {
+    fun onLocationChange(loc: Location) {
+        var location = Position(loc)
+
         if (location.distanceTo(destination) <= proximity) {
             destinatonReached = true
             findViewById<TextView>(R.id.statusText).apply {
@@ -63,11 +65,11 @@ class DestinationActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(map: GoogleMap) {
         val graz = LatLng(47.070714, 15.439504)
-        map.addMarker(MarkerOptions().position(locToLatLng(destination)).title("Destination"))
-        map.moveCamera(CameraUpdateFactory.newLatLng(locToLatLng(destination)))
+        map.addMarker(MarkerOptions().position(destination.toLatLng()).title("Destination"))
+        map.moveCamera(CameraUpdateFactory.newLatLng(destination.toLatLng()))
     }
 
-    fun constructLocation(latitude: Double, longitude: Double) : Location {
+    /* fun constructLocation(latitude: Double, longitude: Double) : Location {
         val newLocation = Location("")
         newLocation.setLatitude(latitude)
         newLocation.setLongitude(longitude)
@@ -76,5 +78,5 @@ class DestinationActivity : AppCompatActivity(), OnMapReadyCallback {
 
     fun locToLatLng(location: Location) : LatLng {
         return LatLng(location.latitude, location.longitude)
-    }
+    } */
 }
